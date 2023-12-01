@@ -4,14 +4,15 @@ Identical to the official CouchDB image (`3.3.2`), with permissive CORS pre-conf
 
 ## `Dockerfile`
 
-```
-FROM couchdb:3.3.2
+```dockerfile
+ARG VERSION=3.3.2
+FROM couchdb:${VERSION}
 COPY --chown=couchdb:couchdb --chmod=644 cors.ini /opt/couchdb/etc/default.d/99-cors-default.ini
 ```
 
 ## `cors.ini`
 
-```
+```ini
 [chttpd]
 enable_cors = true
 bind_address = 0.0.0.0
@@ -27,6 +28,8 @@ headers = accept,authorization,content-type,origin,referer,x-csrf-token
 
 ## Usage
 
-`docker run --rm --name couchdb -d -p 5984:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password altcmdio/couchdb-with-cors`
+```bash
+docker run --rm --name couchdb -d -p 5984:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password altcmdio/couchdb-with-cors
+```
 
-> Note that CouchDB no longer supports admin-party mode, so you have to specify a default username and password when starting a container; here, we pass them as environment variables (`COUCHDB_USER` and `COUCHDB_PASSWORD`) on the command line.
+> Note that CouchDB no longer supports admin-party mode, so you have to specify a default username and password when starting a container; here we pass them as environment variables (`COUCHDB_USER` and `COUCHDB_PASSWORD`) on the command line.
